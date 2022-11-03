@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<table>
+    <th>
+        글제목
+    </th>
+    <th>
+        게시시간
+    </th>
+    {% for i in articlelist %}
+
+    {% if forloop.counter <= 10 %} <tr>
+        <td>
+            {{i.title}}
+        </td>
+        <td>
+            {{i.time}}
+        </td>
+
+        {% endif %}
+        {%endfor%}
+        <tr>
+            <td>
+                <p onclick='move(event)' id='/app/articlelist'>더보기</p>
+            </td>
+        </tr>
+</table>
+{% endblock %}

@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %} 
+{% block content %}
+<form method = 'post'>
+    {% csrf_token %}
+<label for="email">이메일</label>
+<input id = 'email' type="text" name ='email'>
+<label for="pwd">비밀번호</label>
+<input id = 'pwd' type="text" name ='pwd' >
+<button type = 'submit'>로그인</button>
+</form>
+<script>
+    function move(e) {
+        location = e.target.id
+    }
+</script>
+{% endblock %}  

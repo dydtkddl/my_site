@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content%}
+<p id ='/app/upload/'onclick="move(event)">글쓰기</p>
+<table>
+    <th>
+        글 제목
+    </th>
+    <th>
+        작성자    
+    </th>
+    <th>
+        날짜    
+    </th>
+    {% for i in articlelist %}
+    <tr onclick='move(event)'>
+        <td id ='/app/detail/{{i.id}}'>
+            {{ i.title }}
+        </td>
+        <td id ='/app/detail/{{i.id}}'>
+            {{ i.user.name}}
+        </td>
+        <td id ='/app/detail/{{i.id}}'>
+            {{i.time}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock%}

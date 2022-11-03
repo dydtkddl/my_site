@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script>
+            $(document).ready(function () {
+            console.log(1);
+            const ajax = fetch('/app/category_list/').then(function(e) {
+                return e.json()
+            }).then(function (ev){
+                code = ''
+                console.log(ev)
+                for (i in ev){
+                    console.log(i.id)
+                    code += `<li>${i[0]['name']}</li>`
+                }
+                document.querySelector('#category_spot').innerHTML = code;
+            })
+        })
+        // window.onload = function() {
+        //     console.log(1);
+        //     const ajax = fetch('/app/category_list/').then(function(e) {
+        //         return e.json()
+        //     }).then(function (ev){
+        //         code = ''
+        //         for (i in ev){
+        //             code += `<li>${i}</li>`
+        //         }
+        //         document.querySelector('#category_spot').innerHTML = code;
+        //     })
+        // }
+    </script>
+    
+    <title>
+        사이트만들기
+    </title>
+    <style>
+        span p {
+            display: inline-block;
+            margin-left: 10px;
+            background-color: beige;
+        }
+
+        .nav_right {
+            position: absolute;
+            right: 10%;
+        }
+
+        .nav_bar {
+            position: relative;
+        }
+
+        .top {
+            background-color: #009688 !important;
+            height: 85px;
+        }
+
+        .top>span {
+            font-size: 50px;
+            margin-left: 20px;
+            margin-right: 500px;
+            font-weight: bold;
+        }
+
+        body {
+            max-width: max-content;
+            margin: auto;
+        }
+
+        html {
+            background-color: azure;
+        }
+
+        .sidebar {
+            background-color: rgb(43, 160, 160);
+            width: 180px;
+            height: 100vh;
+            display: inline-block;
+
+        }
+
+        .main {
+
+            position: relative;
+            display: block;
+        }
+
+        .content {
+            display: inline-block;
+            position: absolute;
+            top: 10px;
+        }
+
+        .x {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- {% csrf_token %} -->
+    <div class='main'>
+        <div class="top">
+            <span>SmartYong's Page</span>
+        </div>
+        {% if request.session.email %}
+        <nav class='nav_bar' style='background-color: wheat;'>
+            <span class='nav_left'>
+                <p id='/app/home/' onclick="move(event)">홈으로이동</p>
+                <p id='/app/articlelist/' onclick="move(event)">글목록</p>
+            </span>
+            <span class='nav_right'>
+                <p id='/app/mypage/' onclick="move(event)">[{{ request.session.name }}] 님, 안녕하세요</p>
+                <p id='/app/signout/' onclick="move(event)">로그아웃</p>
+            </span>
+        </nav>
+        {% else %}
+
+        <nav class='nav_bar' style='background-color: wheat;'>
+            <span class='nav_left'>
+                <p id='/app/home/' onclick="move(event)">홈으로이동</p>
+                <p id='/app/articlelist/' onclick="move(event)">글목록</p>
+            </span>
+            <span class='nav_right'>
+                <p id='/app/signin/' onclick="move(event)">로그인이동</p>
+                <p id='/app/signup/' onclick="move(event)">회원가입이동</p>
+            </span>
+        </nav>
+        {% endif %}
+        <div class="x">
+            <div class='sidebar'>
+                <ul>
+                    <li>
+                        카테고리
+                    </li>
+                    <span id = 'category_spot'>
+                    </span>
+                </ul>
+                <button onclick="add_category()">추가</button>
+                <div class='add_category_input'>
+                    <!--  -->
+                </div>
+            </div>
+            <div class='content'>
+                {% block content%}
+                {%endblock%}
+            </div>
+        </div>
+    </div>
+
+    <!-- <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" /> -->
+</body>
+<script>
+    //  $.ajaxSetup({
+    //       headers: { "X-CSRFToken": '{{csrf_token}}' }
+    //     });
+    
+    function move(event) {
+        console.log('1');
+        console.log();
+        location = event.target.id;
+    }
+    function add_category() {
+        if (document.querySelector('#add_category_input')) {
+            document.querySelector('#add_category_input').remove();
+            document.querySelector('#makebtn').remove();
+        } else {
+            let code = `<input type = "text" id="add_category_input" name = "newcategoryname">
+                        <input onclick='add_category_post()' id ='makebtn'type = 'button' value ='make'>`;
+            document.querySelector('.add_category_input').innerHTML = code;
+        }
+    }
+    function add_category_post() {
+        let category_name = document.querySelector('#add_category_input').value;
+        console.log(category_name)
+        const ajax = fetch(url = '/app/makecategory/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            category_name: document.querySelector('#add_category_input').value,
+            x:1,
+            y:2
+        })
+        }).then((res)=>res.json())
+        .then(function (data){
+            let response = data['response'];
+            let code1 = `<p style = 'background-color:wheat;'>${response}</p>`;
+            document.querySelector('.add_category_input').innerHTML = code1;
+        })
+    }
+</script>
+
+</html>
