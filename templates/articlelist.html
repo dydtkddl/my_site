@@ -1,28 +1,58 @@
 {% extends 'base.html' %}
 {% block content%}
-<p id ='/app/upload/'onclick="move(event)">글쓰기</p>
-<table>
-    <th>
-        글 제목
-    </th>
-    <th>
-        작성자    
-    </th>
-    <th>
-        날짜    
-    </th>
-    {% for i in articlelist %}
-    <tr onclick='move(event)'>
-        <td id ='/app/detail/{{i.id}}'>
-            {{ i.title }}
-        </td>
-        <td id ='/app/detail/{{i.id}}'>
-            {{ i.user.name}}
-        </td>
-        <td id ='/app/detail/{{i.id}}'>
-            {{i.time}}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+{% load static %}
+
+<p class='/app/upload/'onclick="move(event)"><img  class='/app/upload/' onclick="move(event)" src="{% static '연필.png' %}"alt="연필" id = '연필'style = 'width: 18px;'><label class='/app/upload/' onclick="move(event)"for="연필">글쓰기</label></p>
+
+<h2>전체 글 목록</h2>
+
+<div class="container">
+  <div >
+      <div >
+      <table style="background-color:rgb(133, 129, 121)">
+          <!-- <caption class="text-center">An example of a responsive table based on <a href="https://datatables.net/extensions/responsive/" target="_blank">DataTables</a>:</caption> -->
+        <thead>
+            <tr>
+            <th>
+                제목
+            </th>
+            <th>
+                카테고리    
+            </th>
+            <th>
+                작성자    
+            </th>
+            <th>
+                날짜   
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for i in articlelist %}
+            <tr onclick='move(event)'>
+                <td class ='/app/detail/{{i.id}}'>
+                    {{ i.title }}
+                </td>
+                <td class ='/app/detail/{{i.id}}'>
+                    {{ i.category.name }}
+                </td>
+                <td class ='/app/detail/{{i.id}}'>
+                    {{ i.user.name}}
+                </td>
+                <td class ='/app/detail/{{i.id}}'>
+                    {{i.time}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+              <td colspan="5" class="text-center">Data retrieved from <a href="http://www.infoplease.com/ipa/A0855611.html" target="_blank">infoplease</a> and <a href="http://www.worldometers.info/world-population/population-by-country/" target="_blank">worldometers</a>.</td>
+            </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
 {% endblock%}

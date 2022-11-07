@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
-
+    {% load static %}
 <head>
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script>
-            $(document).ready(function () {
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        $(document).ready(function () {
             console.log(1);
-            const ajax = fetch('/app/category_list/').then(function(e) {
+
+            const ajax = fetch('/app/category_list/').then(function (e) {
                 return e.json()
-            }).then(function (ev){
-                code = ''
-                console.log(ev)
-                for (i in ev){
-                    console.log(i.id)
-                    code += `<li>${i[0]['name']}</li>`
+            }).then(function (ev) {
+
+                let code = '';
+                // console.log(ev[1].name)
+
+                for (i of ev) {
+                    console.log(i)
+                    code += `<li onclick='go_category(event)' id ='${i['name']}'>${i['name']}</li>`
                 }
                 document.querySelector('#category_spot').innerHTML = code;
             })
@@ -31,15 +34,22 @@
         //     })
         // }
     </script>
-    
+
     <title>
         사이트만들기
     </title>
     <style>
+        textarea{
+            padding-top: 20px !important;
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgb(0, 0, 0);
+        }
         span p {
             display: inline-block;
+            color: white;
             margin-left: 10px;
-            background-color: beige;
+            background-color: rgb(0, 0, 0);
         }
 
         .nav_right {
@@ -50,10 +60,11 @@
         .nav_bar {
             position: relative;
         }
-
+        
         .top {
-            background-color: #009688 !important;
+            background-color: #000000 !important;
             height: 85px;
+            color:white
         }
 
         .top>span {
@@ -64,36 +75,62 @@
         }
 
         body {
-            max-width: max-content;
+            max-width: 1000px;
+            min-width: 700px;
             margin: auto;
+            border: 5px solid black;
         }
 
         html {
-            background-color: azure;
+            background-color: rgb(61, 62, 62);
+            
         }
-
-        .sidebar {
-            background-color: rgb(43, 160, 160);
-            width: 180px;
-            height: 100vh;
+        .x {
+            position: relative;
+            display: flex;
+            min-height: 800px;
+        }
+        
+        .content {
             display: inline-block;
-
+            /* position: absolute;
+            top: 10px; */
+            flex:5;
+            background-color: #3d3f3f;
         }
 
-        .main {
+        .leftbar {
+            min-width: 150px;
+            color: white;
+            /* display: inline-block; */
+            flex:1;
+        }
+        .sidebar{
+            background-color: rgb(0, 0, 0);
 
+        }
+        .right-bar{
+            flex:0.1;
+        }
+        .main {
+            background-color: #000000;
             position: relative;
             display: block;
         }
 
-        .content {
-            display: inline-block;
-            position: absolute;
-            top: 10px;
+        .detail_section {
+            padding-left: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 20px;
+            margin-top:10px;
+            margin-left: 10px;
+            margin-right: 10px;
+            background-color:rgb(126, 128, 129);
         }
-
-        .x {
-            position: relative;
+        .nav_bar {
+            margin-left:15px;
+            margin-right:16px;
         }
     </style>
 </head>
@@ -102,42 +139,46 @@
     <!-- {% csrf_token %} -->
     <div class='main'>
         <div class="top">
-            <span>SmartYong's Page</span>
+            <span class='/app/home/' onclick="move(event)">SmartYong's Page</span>
         </div>
         {% if request.session.email %}
-        <nav class='nav_bar' style='background-color: wheat;'>
+        <nav class='nav_bar' style='background-color: rgb(53, 52, 50);'>
             <span class='nav_left'>
-                <p id='/app/home/' onclick="move(event)">홈으로이동</p>
-                <p id='/app/articlelist/' onclick="move(event)">글목록</p>
+                <p class='/app/home/' onclick="move(event)">홈으로이동</p>
+                <p class='/app/articlelist/' onclick="move(event)">전체 글목록</p>
+                <p ><img  class='/app/upload/' onclick="move(event)" src="{% static '연필.png' %}"alt="연필" id = '연필'style = 'width: 18px;'><label  class='/app/upload/' onclick="move(event)"for="연필">글쓰기</label></p>
             </span>
             <span class='nav_right'>
-                <p id='/app/mypage/' onclick="move(event)">[{{ request.session.name }}] 님, 안녕하세요</p>
-                <p id='/app/signout/' onclick="move(event)">로그아웃</p>
+                <p class='/app/mypage/' onclick="move(event)">[{{ request.session.name }}] 님, 안녕하세요</p>
+                <p class='/app/signout/' onclick="move(event)">로그아웃</p>
             </span>
         </nav>
         {% else %}
 
-        <nav class='nav_bar' style='background-color: wheat;'>
+        <nav class='nav_bar' style='background-color: rgb(41, 41, 41);'>
             <span class='nav_left'>
-                <p id='/app/home/' onclick="move(event)">홈으로이동</p>
-                <p id='/app/articlelist/' onclick="move(event)">글목록</p>
+                <p class='/app/home/' onclick="move(event)">홈으로이동</p>
+                <p class='/app/articlelist/' onclick="move(event)">전체 글목록</p>
             </span>
             <span class='nav_right'>
-                <p id='/app/signin/' onclick="move(event)">로그인이동</p>
-                <p id='/app/signup/' onclick="move(event)">회원가입이동</p>
+                <p class='/app/signin/' onclick="move(event)">로그인이동</p>
+                <p class='/app/signup/' onclick="move(event)">회원가입이동</p>
             </span>
         </nav>
         {% endif %}
         <div class="x">
-            <div class='sidebar'>
+            <div class='sidebar leftbar' style="background-color:#262727;margin-left: 14px; padding-left:0px">
+                <div style = 'background-color: #000000; font-size: larger; margin-top: 10px; text-align: center; margin-left: 10px;margin-right: 10px;'>
+                카테고리    
+                </div>
                 <ul>
-                    <li>
-                        카테고리
-                    </li>
-                    <span id = 'category_spot'>
+                    <span id='category_spot'>
                     </span>
                 </ul>
-                <button onclick="add_category()">추가</button>
+                <span class='active_btn ' style="margin-left:10px">
+                    <button onclick="add_category()">추가</button>
+                    <button onclick="modify_category()">수정</button>
+                </span>
                 <div class='add_category_input'>
                     <!--  -->
                 </div>
@@ -146,20 +187,107 @@
                 {% block content%}
                 {%endblock%}
             </div>
+            <div class="right-bar sidebar"></div>
         </div>
     </div>
+    
+    <footer style="background-color:#000000">
+        <div style="height: 30px; background-color: rgb(49, 49, 49); margin-left: 15px; margin-right: 16px;">
+
+        </div>
+        <div style="height:50px; background-color: #000000;">
+
+        </div>
+    </footer>
 
     <!-- <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" /> -->
 </body>
 <script>
+    function go_category(event){
+        let id = event.target.id
+        console.log(id)
+        location = `/app/call_category/?category=${id}`;
+    }
+    function modify_category() {
+        let code = '';
+        const ajax = fetch('/app/category_list/').then(function (e) {
+            return e.json()
+        }).then(
+            function (ev) {
+                if (ev.length == 0) {
+                    console.log('xxx')
+                } else {
+                    console.log(ev)
+                    for (i of ev) {
+
+                        code += `
+                        <li>
+                            <input type ='checkbox' value='${i.name}' id ='${i.name}' >    
+                            <label for = '${i.name}'>${i.name}</label>
+                        </li>
+                    `;
+                        document.querySelector('#category_spot').innerHTML = code;
+
+                    }
+                    let code2 = `
+                <button onclick="remove_category()">삭제</button>
+                    <button onclick="back_to_category()">취소</button>
+            `;
+                    document.querySelector('.active_btn').innerHTML = code2;
+                    let code3 = '';
+                    document.querySelector('.add_category_input').innerHTML = code3;
+                }
+            }
+        )
+    }
+    function back_to_category() {
+        const ajax = fetch('/app/category_list/').then(function (e) {
+            return e.json()
+        }).then(function (ev) {
+            console.log(ev)
+            let code = '';
+            // console.log(ev[1].name)
+
+            for (i of ev) {
+                console.log(i)
+                code += `<li>${i['name']}</li>`
+            }
+            document.querySelector('#category_spot').innerHTML = code;
+            let code2 = `
+                <button onclick="add_category()">추가</button>
+                <button onclick="modify_category()">수정</button>
+                `;
+            document.querySelector('.active_btn').innerHTML = code2
+        })
+    }
+    function remove_category() {
+        console.log(document.querySelectorAll('input:checked'));
+        let checked_list = document.querySelectorAll('input:checked');
+        const itemDict = {};
+        for (i of checked_list) {
+            // console.log(i.id)
+            itemDict[i.id] = i.id;
+        }
+        console.log(itemDict)
+        const ajax = fetch('/app/remove_category/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                checked: itemDict
+            })
+        }).then(function () {
+            window.alert('삭제완료')
+            location.reload()
+        })
+    }
     //  $.ajaxSetup({
     //       headers: { "X-CSRFToken": '{{csrf_token}}' }
     //     });
-    
+
     function move(event) {
         console.log('1');
         console.log();
-        location = event.target.id;
+        location = event.target.getAttribute('class');
     }
     function add_category() {
         if (document.querySelector('#add_category_input')) {
@@ -170,6 +298,7 @@
                         <input onclick='add_category_post()' id ='makebtn'type = 'button' value ='make'>`;
             document.querySelector('.add_category_input').innerHTML = code;
         }
+
     }
     function add_category_post() {
         let category_name = document.querySelector('#add_category_input').value;
@@ -180,17 +309,43 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-            category_name: document.querySelector('#add_category_input').value,
-            x:1,
-            y:2
-        })
-        }).then((res)=>res.json())
-        .then(function (data){
-            let response = data['response'];
-            let code1 = `<p style = 'background-color:wheat;'>${response}</p>`;
-            document.querySelector('.add_category_input').innerHTML = code1;
+                category_name: document.querySelector('#add_category_input').value
+            })
+        }).then((res) => res.json())
+            .then(function (data) {
+                let response = data['response'];
+                window.alert(response)
+                // let code1 = `<p style = 'background-color:wheat;'>${response}</p>`;
+                // document.querySelector('.add_category_input').innerHTML = code1;
+            }).then((d) => location.reload())
+    }
+    function modify_article(){
+        let id = document.getElementsByClassName('article_section')[0].id
+        console.log('xxx')
+        console.log(id)
+        let title = document.getElementById('modify_title').value;
+        console.log(title)
+        let category = document.getElementById('modify_category').value;
+        console.log(category)
+        let content = document.getElementById('modify_content').value;
+        console.log(content)
+        const ajax = fetch(  '/app/modify_article/'  , {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+            },
+            body:JSON.stringify({
+                id:id,
+                title:title,
+                category:category,
+                content:content
+            })
+        }).then(function(response){
+            window.alert('수정완료');
+            location = `/app/detail/${id}`;
         })
     }
+        
 </script>
 
 </html>

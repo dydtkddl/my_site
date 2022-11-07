@@ -2,10 +2,16 @@
 {% block content %}
 <table>
     <th>
-        글제목
+        제목
     </th>
     <th>
-        게시시간
+        카테고리
+    </th>
+    <th>
+        작성자    
+    </th>
+    <th>
+        날짜
     </th>
     {% for i in articlelist %}
 
@@ -21,7 +27,7 @@
         {%endfor%}
         <tr>
             <td>
-                <p onclick='move(event)' id='/app/articlelist'>더보기</p>
+                <p onclick='move(event)' class='/app/articlelist'>더보기</p>
             </td>
         </tr>
 </table>

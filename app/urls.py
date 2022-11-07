@@ -13,5 +13,9 @@ urlpatterns = [
     path('mypage/', views.mypage),
     path('makecategory/', views.makecategory),
     path('category_list/', views.category_list),
+    path('remove_category/', views.remove_category),
+    path('call_category/', views.call_category),
+    path('modify_article/', views.modify_article),
+    path('remove_article/', views.remove_article),
 
 ]

@@ -1,0 +1,36 @@
+
+{% extends 'base.html' %}
+{% block content%}
+{% load static %}
+<p class='/app/upload/'onclick="move(event)"><img  class='/app/upload/' onclick="move(event)" src="{% static '연필.png' %}"alt="연필" id = '연필'style = 'width: 18px;'><label class='/app/upload/' onclick="move(event)"for="연필">글쓰기</label></p>
+<table>
+    <th>
+        제목
+    </th>
+    <th>
+        카테고리    
+    </th>
+    <th>
+        작성자    
+    </th>
+    <th>
+        날짜   
+    </th>
+    {% for i in articles %}
+    <tr onclick='move(event)'>
+        <td class ='/app/detail/{{i.id}}'>
+            {{ i.title }}
+        </td>
+        <td class ='/app/detail/{{i.id}}'>
+            {{ i.category.name }}
+        </td>
+        <td class ='/app/detail/{{i.id}}'>
+            {{ i.user.name}}
+        </td>
+        <td class ='/app/detail/{{i.id}}'>
+            {{i.time}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock%}
